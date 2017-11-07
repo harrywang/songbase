@@ -10,16 +10,26 @@ def index():
 
 
 @app.route('/users')
-def get_all_users():
+def show_all_users():
     # return "<h2>this is the page for all users</h2>"
     return render_template('user-all.html')
 
 
-@app.route('/users/<string:name>/')
+@app.route('/user/<string:name>/')
 def get_user_name(name):
     # return "hello " + name
     # return "Hello %s, this is %s" % (name, 'administrator')
     return render_template('user.html', name=name)
+
+
+@app.route('/songs')
+def show_all_songs():
+    songs = [
+        'Paradise',
+        'Yellow',
+        'Viva La Vida'
+    ]
+    return render_template('song-all.html', songs=songs)
 
 
 @app.route('/song/<int:id>/')
