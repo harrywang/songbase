@@ -1,16 +1,19 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>User Page</title>
-  </head>
-  <body>
-    <h1>Coldplay Top Hits:</h1>
-    {# This is a loop #}
+{% extends "home-base.html"%}
+{% block title %}All Songs{% endblock %}
+{% block head%}
+  {{ super() }}
+{% endblock%}
+{% block page_content%}
+
+  <!-- Page Content -->
+  <div class="container">
+    <h1 class="mt-5"> <i class="fa fa-music" aria-hidden="true"></i> Browse All Songs:</h1>
     <ul>
-      {% for song in songs %}
+        {% for song in songs %}
           <li>{{song}}</li>
-      {% endfor %}
+        {% endfor%}
     </ul>
-  </body>
-</html>
+
+  </div>
+
+{% endblock%}

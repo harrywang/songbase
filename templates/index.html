@@ -2,12 +2,13 @@
 {% block title %}Home Page{% endblock %}
 {% block head%}
   {{ super() }}
-  <style>
-    h1 {
-      color:red;
-    }
-  </style>
 {% endblock%}
-{% block body%}
-    <h1>this is the homepage</h1>
+{% block page_content%}
+
+  <!-- Page Content -->
+  <div class="container">
+    <h1 class="mt-5"><i class="fa fa-bullhorn" aria-hidden="true"></i> Welcome to SongBase!</h1>
+    <p>This is a sample project for learning Flask.</p>
+  </div>
+
 {% endblock%}
