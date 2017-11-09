@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Home Page</title>
-  </head>
-  <body>
+{% extends "home-base.html"%}
+{% block title %}Home Page{% endblock %}
+{% block head%}
+  {{ super() }}
+  <style>
+    h1 {
+      color:red;
+    }
+  </style>
+{% endblock%}
+{% block body%}
     <h1>this is the homepage</h1>
-  </body>
-</html>
+{% endblock%}
