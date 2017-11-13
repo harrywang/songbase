@@ -47,7 +47,12 @@
       </div>
     </div>
   </nav>
-
+  {% for category, message in get_flashed_messages(with_categories=true) %}
+    <div class="alert alert-{{category}}">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+      {{ message }}
+    </div>
+  {% endfor %}
   {% block page_content%}
   {% endblock%}
 

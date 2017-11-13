@@ -1,5 +1,6 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, flash
 app = Flask(__name__)
+app.secret_key = 'this should be a secret key'
 
 
 @app.route('/')
@@ -16,6 +17,7 @@ def show_all_songs():
         'Yellow',
         'Viva La Vida'
     ]
+
     return render_template('song-all.html', songs=songs)
 
 
@@ -26,8 +28,18 @@ def about():
 
 @app.route('/users')
 def show_all_users():
-    # return "<h2>this is the page for all users</h2>"
     return render_template('user-all.html')
+
+
+@app.route('/form-demo', methods=['GET', 'POST'])
+def form_demo():
+    # how to get form data is different for GET vs. POST
+    if request.method == 'GET':
+        first_name = request.args.get('first_name')
+        return render_template('form-demo.html', first_name=first_name)
+    if request.method == 'POST':
+        first_name = request.form['first_name']
+        return render_template('form-demo.html', first_name=first_name)
 
 
 @app.route('/user/<string:name>/')
@@ -35,8 +47,6 @@ def get_user_name(name):
     # return "hello " + name
     # return "Hello %s, this is %s" % (name, 'administrator')
     return render_template('user.html', name=name)
-
-
 
 
 @app.route('/song/<int:id>/')
