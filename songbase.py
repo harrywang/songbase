@@ -1,6 +1,6 @@
-from flask import Flask, render_template, request, flash
+from flask import Flask, session, render_template, request, flash, redirect, url_for
 app = Flask(__name__)
-app.secret_key = 'this should be a secret key'
+app.config['SECRET_KEY'] = 'hard to get secure key'
 
 
 @app.route('/')
@@ -36,10 +36,14 @@ def form_demo():
     # how to get form data is different for GET vs. POST
     if request.method == 'GET':
         first_name = request.args.get('first_name')
-        return render_template('form-demo.html', first_name=first_name)
+        if first_name:
+            return render_template('form-demo.html', first_name=first_name)
+        else:
+            return render_template('form-demo.html', first_name=session.get('first_name'))
     if request.method == 'POST':
-        first_name = request.form['first_name']
-        return render_template('form-demo.html', first_name=first_name)
+        session['first_name'] = request.form['first_name']
+        # return render_template('form-demo.html', first_name=first_name)
+        return redirect(url_for('form_demo'))
 
 
 @app.route('/user/<string:name>/')
