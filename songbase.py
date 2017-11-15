@@ -34,12 +34,6 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/songs')
-def show_all_songs():
-    songs = Song.query.all()
-    return render_template('song-all.html', songs=songs)
-
-
 @app.route('/artists')
 def show_all_artists():
     artists = Artist.query.all()
@@ -60,6 +54,30 @@ def add_artists():
         db.session.add(artist)
         db.session.commit()
         return redirect(url_for('show_all_artists'))
+
+
+@app.route('/songs')
+def show_all_songs():
+    songs = Song.query.all()
+    return render_template('song-all.html', songs=songs)
+
+
+@app.route('/song/add', methods=['GET', 'POST'])
+def add_songs():
+    if request.method == 'GET':
+        artists = Artist.query.all()
+        return render_template('song-add.html', artists=artists)
+    if request.method == 'POST':
+        # get data from the form
+        name = request.form['name']
+        year = request.form['year']
+        lyrics = request.form['year']
+
+        # insert the data into the database
+        song = Song(name=name, year=year, lyrics=lyrics)
+        db.session.add(song)
+        db.session.commit()
+        return redirect(url_for('show_all_songs'))
 
 
 @app.route('/about')

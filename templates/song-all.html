@@ -1,11 +1,14 @@
 {% extends "home-base.html"%}
-{% block title %}All Artists{% endblock %}
+{% block title %}All Songs{% endblock %}
 {% block page_content%}
 
   <!-- Page Content -->
   <div class="container">
     <h1 class="mt-5"><i class="fa fa-music" aria-hidden="true"></i> Songs:</h1>
-    {% if artists %}
+    <div class="row bottom-margin">
+      <a href="/song/add" class="btn btn-primary" role="button" aria-disabled="true">Add Songs</a>
+    </div>
+    {% if songs %}
       <table class="table">
         <thead>
           <tr>
