@@ -10,10 +10,21 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
 db = SQLAlchemy(app)
 
-# to avoid circular import
-# the following import "tables" line has to be below db = SQLAlchemy(app)
-# see http://bit.ly/2zJDRO2
-from models import Artist, Song
+
+# define database tables
+class Artist(db.Model):
+    __tablename__ = 'artists'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64))
+    about = db.Column(db.Text)
+
+
+class Song(db.Model):
+    __tablename__ = 'songs'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(256))
+    year = db.Column(db.Integer)
+    lyrics = db.Column(db.Text)
 
 
 @app.route('/')

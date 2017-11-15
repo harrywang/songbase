@@ -1,6 +1,5 @@
 from flask_script import Manager
-from songbase import app, db
-from models import Artist
+from songbase import app, db, Artist
 
 manager = Manager(app)
 
