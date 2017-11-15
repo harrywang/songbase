@@ -58,6 +58,21 @@ def add_artists():
         return redirect(url_for('show_all_artists'))
 
 
+@app.route('/artist/edit/<int:id>', methods=['GET', 'POST'])
+def edit_artist(id):
+    artist = Artist.query.filter_by(id=id).first()
+    if request.method == 'GET':
+        return render_template('artist-edit.html', artist=artist)
+    if request.method == 'POST':
+        # update data based on the form data
+        artist.name = request.form['name']
+        artist.about = request.form['about']
+        # update the database
+        db.session.commit()
+        return redirect(url_for('show_all_artists'))
+
+
+# song-all.html adds song id to the edit button using a hidden input
 @app.route('/songs')
 def show_all_songs():
     songs = Song.query.all()
@@ -76,10 +91,29 @@ def add_songs():
         lyrics = request.form['lyrics']
         artist_name = request.form['artist']
         artist = Artist.query.filter_by(name=artist_name).first()
+        song = Song(name=name, year=year, lyrics=lyrics, artist=artist)
 
         # insert the data into the database
-        song = Song(name=name, year=year, lyrics=lyrics, artist=artist)
         db.session.add(song)
+        db.session.commit()
+        return redirect(url_for('show_all_songs'))
+
+
+@app.route('/song/edit/<int:id>', methods=['GET', 'POST'])
+def edit_song(id):
+    song = Song.query.filter_by(id=id).first()
+    artists = Artist.query.all()
+    if request.method == 'GET':
+        return render_template('song-edit.html', song=song, artists=artists)
+    if request.method == 'POST':
+        # update data based on the form data
+        song.name = request.form['name']
+        song.year = request.form['year']
+        song.lyrics = request.form['lyrics']
+        artist_name = request.form['artist']
+        artist = Artist.query.filter_by(name=artist_name).first()
+        song.artist = artist
+        # update the database
         db.session.commit()
         return redirect(url_for('show_all_songs'))
 

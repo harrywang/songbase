@@ -17,6 +17,7 @@
             <th>Year</th>
             <th>Artist</th>
             <th>Lyrics</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -52,7 +53,11 @@
                 </div>
               </div>
               </td>
+              <td>
+                <a href="/song/edit/{{song.id}}" class="btn btn-success" role="button" aria-disabled="true">Edit</a>
+              </td>
           </tr>
+
           {% endfor%}
         </tbody>
       </table>

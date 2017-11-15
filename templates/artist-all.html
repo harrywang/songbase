@@ -15,6 +15,7 @@
             <th>#</th>
             <th>Name</th>
             <th>About</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -23,6 +24,9 @@
               <th scope="row">{{artist.id}}</th>
               <td>{{artist.name}}</td>
               <td>{{artist.about}}</td>
+              <td>
+                <a href="/artist/edit/{{artist.id}}" class="btn btn-success" role="button" aria-disabled="true">Edit</a>
+              </td>
           </tr>
           {% endfor%}
         </tbody>
