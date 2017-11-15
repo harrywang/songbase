@@ -17,6 +17,7 @@ class Artist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64))
     about = db.Column(db.Text)
+    songs = db.relationship('Song', backref='artist')
 
 
 class Song(db.Model):
@@ -25,6 +26,7 @@ class Song(db.Model):
     name = db.Column(db.String(256))
     year = db.Column(db.Integer)
     lyrics = db.Column(db.Text)
+    artist_id = db.Column(db.Integer, db.ForeignKey('artists.id'))
 
 
 @app.route('/')
@@ -71,10 +73,12 @@ def add_songs():
         # get data from the form
         name = request.form['name']
         year = request.form['year']
-        lyrics = request.form['year']
+        lyrics = request.form['lyrics']
+        artist_name = request.form['artist']
+        artist = Artist.query.filter_by(name=artist_name).first()
 
         # insert the data into the database
-        song = Song(name=name, year=year, lyrics=lyrics)
+        song = Song(name=name, year=year, lyrics=lyrics, artist=artist)
         db.session.add(song)
         db.session.commit()
         return redirect(url_for('show_all_songs'))
