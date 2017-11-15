@@ -1,6 +1,19 @@
+import os
 from flask import Flask, session, render_template, request, flash, redirect, url_for
+from flask_sqlalchemy import SQLAlchemy
+
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'hard to get secure key'
+app.config['SECRET_KEY'] = 'hard to guess secure key'
+
+# setup SQLAlchemy
+basedir = os.path.abspath(os.path.dirname(__file__))
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+db = SQLAlchemy(app)
+
+# to avoid circular import
+# the following import "tables" line has to be below db = SQLAlchemy(app)
+# see http://bit.ly/2zJDRO2
+from models import Artist, Song
 
 
 @app.route('/')
@@ -12,13 +25,14 @@ def index():
 
 @app.route('/songs')
 def show_all_songs():
-    songs = [
-        'Paradise',
-        'Yellow',
-        'Viva La Vida'
-    ]
-
+    songs = Song.query.all()
     return render_template('song-all.html', songs=songs)
+
+
+@app.route('/artists')
+def show_all_artists():
+    artists = Artist.query.all()
+    return render_template('artist-all.html', artists=artists)
 
 
 @app.route('/about')

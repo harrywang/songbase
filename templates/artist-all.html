@@ -4,30 +4,28 @@
 
   <!-- Page Content -->
   <div class="container">
-    <h1 class="mt-5"><i class="fa fa-music" aria-hidden="true"></i> Songs:</h1>
+    <h1 class="mt-5"><i class="fa fa-user-circle-o" aria-hidden="true"></i> Artists:</h1>
     {% if artists %}
       <table class="table">
         <thead>
           <tr>
             <th>#</th>
             <th>Name</th>
-            <th>Year</th>
-            <th>Lyrics</th>
+            <th>About</th>
           </tr>
         </thead>
         <tbody>
-          {% for song in songs %}
+          {% for artist in artists %}
           <tr>
-              <th scope="row">{{song.id}}</th>
-              <td>{{song.name}}</td>
-              <td>{{song.year}}</td>
-              <td>{{song.lyrics}}</td>
+              <th scope="row">{{artist.id}}</th>
+              <td>{{artist.name}}</td>
+              <td>{{artist.about}}</td>
           </tr>
           {% endfor%}
         </tbody>
       </table>
     {% else %}
-      <h3>There are no songs in the database yet.</h3>
+      <h3>there is no artists in the database yet.</h3>
     {% endif %}
   </div>
 
