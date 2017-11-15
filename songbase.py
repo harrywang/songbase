@@ -46,6 +46,22 @@ def show_all_artists():
     return render_template('artist-all.html', artists=artists)
 
 
+@app.route('/artist/add', methods=['GET', 'POST'])
+def add_artists():
+    if request.method == 'GET':
+        return render_template('artist-add.html')
+    if request.method == 'POST':
+        # get data from the form
+        name = request.form['name']
+        about = request.form['about']
+
+        # insert the data into the database
+        artist = Artist(name=name, about=about)
+        db.session.add(artist)
+        db.session.commit()
+        return redirect(url_for('show_all_artists'))
+
+
 @app.route('/about')
 def about():
     return render_template('about.html')

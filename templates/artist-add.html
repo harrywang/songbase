@@ -1,0 +1,21 @@
+{% extends "home-base.html"%}
+{% block title %}Add Artists{% endblock %}
+{% block page_content%}
+
+  <!-- Page Content -->
+  <div class="container">
+    <h1 class="mt-5"><i class="fa fa-user-circle-o" aria-hidden="true"></i> Add Artists:</h1>
+    <form action="/artist/add" method="post">
+      <div class="form-group">
+        <label>Name</label>
+        <input class="form-control" type="text" name="name" placeholder="Name of the Artist/Band">
+      </div>
+      <div class="form-group">
+        <label>About</label>
+        <textarea class="form-control" name="about" placeholder="Brief Introduction"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Add</button>
+    </form>
+  </div>
+
+{% endblock%}
