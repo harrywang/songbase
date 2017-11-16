@@ -1,5 +1,5 @@
 import os
-from flask import Flask, session, render_template, request, flash, redirect, url_for
+from flask import Flask, session, render_template, request, flash, redirect, url_for, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -72,6 +72,17 @@ def edit_artist(id):
         return redirect(url_for('show_all_artists'))
 
 
+# api for deleting artists, you can use curl to try the api:
+# curl -X "Delete" http://127.0.0.1:5000/api/artists/1
+@app.route('/api/artists/<int:id>', methods=['DELETE'])
+def delete_artist(id):
+    artist = Artist.query.get_or_404(id)
+    db.session.delete(artist)
+    db.session.commit()
+    # api normally return a json
+    return jsonify({'artist': artist.name})
+
+
 # song-all.html adds song id to the edit button using a hidden input
 @app.route('/songs')
 def show_all_songs():
@@ -116,6 +127,17 @@ def edit_song(id):
         # update the database
         db.session.commit()
         return redirect(url_for('show_all_songs'))
+
+
+# api for deleting songs, you can use curl to try the api:
+# curl -X "Delete" http://127.0.0.1:5000/api/songs/1
+@app.route('/api/songs/<int:id>', methods=['DELETE'])
+def delete_song(id):
+    song = Song.query.get_or_404(id)
+    db.session.delete(song)
+    db.session.commit()
+    # api normally return a json
+    return jsonify({'song': song.name})
 
 
 @app.route('/about')
