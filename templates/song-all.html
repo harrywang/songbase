@@ -108,7 +108,7 @@
                   }); // end of SweetAlert
                 } // end of success callback function
               }) // end of ajax call
-              .fail(function(data, textStatus, error) {
+              .fail(function(error) {
                 // console.log(data);
                 swal({
                   title: "Oops...",
@@ -116,12 +116,11 @@
                   type: "error",
                   timer: 2000,
                   showConfirmButton: false
-                });
-              });
-          }
-        });
-    });
-
+                }); // end of SweetAlert
+              }); // end of fail callback function
+          } // end of if confirmed block
+        }); // end of confirmed function of SweetAlert
+    }); // end of button click event function
   }); // end doc ready
 </script>
 {% endblock%}

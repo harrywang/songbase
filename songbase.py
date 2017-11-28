@@ -85,6 +85,14 @@ def delete_artist(id):
         return redirect(url_for('show_all_artists'))
 
 
+@app.route('/api/artist/<int:id>', methods=['DELETE'])
+def delete_ajax_artist(id):
+    artist = Artist.query.get_or_404(id)
+    db.session.delete(artist)
+    db.session.commit()
+    return jsonify({"id": str(artist.id), "name": artist.name})
+
+
 # song-all.html adds song id to the edit button using a hidden input
 @app.route('/songs')
 def show_all_songs():
@@ -147,7 +155,6 @@ def delete_song(id):
 
 @app.route('/api/song/<int:id>', methods=['DELETE'])
 def delete_ajax_song(id):
-    """Delete paper."""
     song = Song.query.get_or_404(id)
     db.session.delete(song)
     db.session.commit()
