@@ -25,7 +25,8 @@
               <td>{{artist.name}}</td>
               <td>{{artist.about}}</td>
               <td>
-                <a href="/artist/edit/{{artist.id}}" class="btn btn-success" role="button" aria-disabled="true">Edit</a>
+                <a href="/artist/edit/{{artist.id}}" class="btn btn-success" role="button">Edit</a>
+                <a href="/artist/delete/{{artist.id}}" class="btn btn-danger" role="button">Delete</a>
               </td>
           </tr>
           {% endfor%}

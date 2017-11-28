@@ -17,7 +17,7 @@ class Artist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64))
     about = db.Column(db.Text)
-    songs = db.relationship('Song', backref='artist')
+    songs = db.relationship('Song', backref='artist', cascade="delete")
 
 
 class Song(db.Model):
@@ -68,6 +68,19 @@ def edit_artist(id):
         artist.name = request.form['name']
         artist.about = request.form['about']
         # update the database
+        db.session.commit()
+        return redirect(url_for('show_all_artists'))
+
+
+@app.route('/artist/delete/<int:id>', methods=['GET', 'POST'])
+def delete_artist(id):
+    artist = Artist.query.filter_by(id=id).first()
+    if request.method == 'GET':
+        return render_template('artist-delete.html', artist=artist)
+    if request.method == 'POST':
+        # delete the artist by id
+        # all related songs are deleted as well
+        db.session.delete(artist)
         db.session.commit()
         return redirect(url_for('show_all_artists'))
 
