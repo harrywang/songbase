@@ -1,0 +1,41 @@
+{% extends "home-base.html"%}
+{% block title %}Delete Song{% endblock %}
+{% block page_content%}
+
+  <!-- Page Content -->
+  <div class="container">
+    <h1 class="mt-5"><i class="fa fa-music" aria-hidden="true"></i> Delete the following song:</h1>
+    <form action="/song/delete/{{song.id}}" method="post">
+      <div class="form-group">
+        <label>Name</label>
+        <input class="form-control" type="text" name="name" value="{{song.name}}" required="true" readonly="true">
+      </div>
+      <div class="form-group">
+        <label>Year</label>
+        <input class="form-control" type="text" name="year" value="{{song.year}}" readonly="true">
+      </div>
+      <div class="form-group">
+        <label>Artist</label>
+        <input class="form-control" type="text" name="artist" value="{{song.artist.name}}" readonly="true">
+      </div>
+      <div class="form-group">
+        <label>Lyrics</label>
+        <textarea class="form-control" name="lyrics" required="true" readonly="true">{{song.lyrics}}</textarea>
+      </div>
+      <button type="submit" class="btn btn-danger" id="delete_btn">Delete</button>
+    </form>
+  </div>
+
+{% endblock%}
+{% block scripts%}
+  {{super()}}
+  <script>
+  $(document).ready(function () {
+    $('#delete_btn').click(function () {
+      if (! confirm('Are you sure?')) {
+        return false;
+      }
+    })
+  });
+  </script>
+{% endblock%}
