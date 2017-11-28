@@ -16,10 +16,10 @@ Install packages
 
     $ pip install -r requirements.txt
 
-To run the development server (use `-d` to enable debugger and reloader):
-
-    $ python manage.py runserver
-
 To initialize the database:
 
-        $ python manage.py deploy
+    $ python manage.py deploy
+
+To run the development server (use `-d` to enable debugger and reloader):
+
+    $ python manage.py runserver -d
