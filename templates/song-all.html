@@ -2,69 +2,126 @@
 {% block title %}All Songs{% endblock %}
 {% block page_content%}
 
-  <!-- Page Content -->
-  <div class="container">
-    <h1 class="mt-5"><i class="fa fa-music" aria-hidden="true"></i> Songs:</h1>
-    <div class="row bottom-margin">
-      <a href="/song/add" class="btn btn-primary" role="button" aria-disabled="true">Add Songs</a>
-    </div>
-    {% if songs %}
-      <table class="table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Year</th>
-            <th>Artist</th>
-            <th>Lyrics</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for song in songs %}
-          <tr>
-              <th scope="row">{{song.id}}</th>
-              <td>{{song.name}}</td>
-              <td>{{song.year}}</td>
-              <td>{{song.artist.name}}</td>
-              <td>
-              <!--  view lyrics button trigger modal -->
-              <button type="button" class="btn btn-info" data-toggle="modal" data-target="#{{song.id}}">
+<!-- Page Content -->
+<div class="container">
+  <h1 class="mt-5"><i class="fa fa-music" aria-hidden="true"></i> Songs:</h1>
+  <div class="row bottom-margin">
+    <a href="/song/add" class="btn btn-primary" role="button" aria-disabled="true">Add Songs</a>
+  </div>
+  {% if songs %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Year</th>
+        <th>Artist</th>
+        <th>Lyrics</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for song in songs %}
+      <tr>
+        <th scope="row">{{song.id}}</th>
+        <td>{{song.name}}</td>
+        <td>{{song.year}}</td>
+        <td>{{song.artist.name}}</td>
+        <td>
+          <!--  view lyrics button trigger modal -->
+          <button type="button" class="btn btn-info" data-toggle="modal" data-target="#{{song.id}}">
                 View
               </button>
 
-              <!-- Modal -->
-              <div class="modal fade" id="{{song.id}}" tabindex="-1" role="dialog">
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title">{{song.name}}</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <!-- Modal -->
+          <div class="modal fade" id="{{song.id}}" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">{{song.name}}</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
-                    </div>
-                    <div class="modal-body">
-                      <pre>{{song.lyrics}}</pre>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                  </div>
+                </div>
+                <div class="modal-body">
+                  <pre>{{song.lyrics}}</pre>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
               </div>
-              </td>
-              <td>
-                <a href="/song/edit/{{song.id}}" class="btn btn-success" role="button" aria-disabled="true">Edit</a>
-                <a href="/song/delete/{{song.id}}" class="btn btn-danger" role="button" aria-disabled="true">Delete</a>
-              </td>
-          </tr>
+            </div>
+          </div>
+        </td>
+        <td>
+          <a href="/song/edit/{{song.id}}" class="btn btn-success" role="button" aria-disabled="true">Edit</a>
+          <a href="/song/delete/{{song.id}}" class="btn btn-danger" role="button" aria-disabled="true">Delete</a>
+          <button class="btn btn-warning delete_ajax_btn" role="button" aria-disabled="true" data-song-id={{song.id}}>Delete Ajax</button>
+        </td>
+      </tr>
 
-          {% endfor%}
-        </tbody>
-      </table>
-    {% else %}
-      <h3>There are no songs in the database yet.</h3>
-    {% endif %}
-  </div>
+      {% endfor%}
+    </tbody>
+  </table>
+  {% else %}
+  <h3>There are no songs in the database yet.</h3> {% endif %}
+</div>
 
+{% endblock%}
+
+{% block scripts%}
+{{super()}}
+<script>
+  $(document).ready(function() {
+    $(".delete_ajax_btn").click(function(event) {
+      var song_id = $(this).data("song-id");
+      // get the table row of this song
+      var row = $(this).parent().parent();
+      swal({
+          title: "Are you sure?",
+          // text: "You are going to delete song" + song.id + ".",
+          type: "warning",
+          html: true,
+          showCancelButton: true,
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText: "Yes, delete it!",
+          closeOnConfirm: false,
+          showLoaderOnConfirm: true
+        },
+        function(isConfirm) {
+          if (isConfirm) {
+            var data = {
+              song_id: song_id
+            };
+            $.ajax({
+                type: "DELETE",
+                url: "/api/song/" + song_id,
+                success: function(response) {
+                  console.log(response);
+                  row.remove(); // remove the table row
+                  swal({
+                    title: "Deleted!",
+                    text: response.name + " has been deleted.",
+                    type: "success",
+                    timer: 2500,
+                    showConfirmButton: false
+                  }); // end of SweetAlert
+                } // end of success callback function
+              }) // end of ajax call
+              .fail(function(data, textStatus, error) {
+                // console.log(data);
+                swal({
+                  title: "Oops...",
+                  text: "Deletion failed",
+                  type: "error",
+                  timer: 2000,
+                  showConfirmButton: false
+                });
+              });
+          }
+        });
+    });
+
+  }); // end doc ready
+</script>
 {% endblock%}
