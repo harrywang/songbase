@@ -58,6 +58,21 @@ def add_artists():
         return redirect(url_for('show_all_artists'))
 
 
+@app.route('/api/artist/add', methods=['POST'])
+def add_ajax_artists():
+    # get data from the form
+    name = request.form['name']
+    about = request.form['about']
+
+    # insert the data into the database
+    artist = Artist(name=name, about=about)
+    db.session.add(artist)
+    db.session.commit()
+    # flash message type: success, info, warning, and danger from bootstrap
+    flash('Artist Inserted', 'success')
+    return jsonify({"id": str(artist.id), "name": artist.name})
+
+
 @app.route('/artist/edit/<int:id>', methods=['GET', 'POST'])
 def edit_artist(id):
     artist = Artist.query.filter_by(id=id).first()

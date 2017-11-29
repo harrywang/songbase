@@ -5,7 +5,7 @@
   <!-- Page Content -->
   <div class="container">
     <h1 class="mt-5"><i class="fa fa-user-circle-o" aria-hidden="true"></i> Add Artists:</h1>
-    <form action="/artist/add" method="post">
+    <form action="/artist/add" method="post" id="add-artist-form">
       <div class="form-group">
         <label>Name</label>
         <input class="form-control" type="text" name="name" placeholder="Name of the Artist/Band" required="true">
@@ -15,7 +15,37 @@
         <textarea class="form-control" name="about" placeholder="Brief Introduction" required="true"></textarea>
       </div>
       <button type="submit" class="btn btn-primary">Add Artist</button>
+      <button type="submit" class="btn btn-success" id="insert-ajax-btn">Add Artist Ajax</button>
     </form>
   </div>
 
+{% endblock%}
+
+{% block scripts%}
+{{super()}}
+<script>
+  $(document).ready(function() {
+    $("#insert-ajax-btn").click(function(event) {
+      event.preventDefault(); // prevent the button to submit the form
+      $.ajax({
+          type: "POST",
+          url: "/api/artist/add",
+          data: $("#add-artist-form").serialize(),
+          success: function(response) {
+            window.location.replace("/artists"); // redirect
+          } // end of success callback function
+        }) // end of ajax call
+        .fail(function(error) {
+          // console.log(data);
+          swal({
+            title: "Oops...",
+            text: "Insertion failed",
+            type: "error",
+            timer: 2000,
+            showConfirmButton: false
+          }); // end of SweetAlert
+        }); // end of fail callback function
+    }); // end of button click event function
+  }); // end doc ready
+</script>
 {% endblock%}

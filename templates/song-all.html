@@ -56,7 +56,7 @@
         <td>
           <a href="/song/edit/{{song.id}}" class="btn btn-success" role="button" aria-disabled="true">Edit</a>
           <a href="/song/delete/{{song.id}}" class="btn btn-danger" role="button" aria-disabled="true">Delete</a>
-          <button class="btn btn-warning delete_ajax_btn" role="button" aria-disabled="true" data-song-id={{song.id}}>Delete Ajax</button>
+          <button class="btn btn-warning delete_ajax_btn" data-song-id={{song.id}}>Delete Ajax</button>
         </td>
       </tr>
 
@@ -90,9 +90,6 @@
         },
         function(isConfirm) {
           if (isConfirm) {
-            var data = {
-              song_id: song_id
-            };
             $.ajax({
                 type: "DELETE",
                 url: "/api/song/" + song_id,

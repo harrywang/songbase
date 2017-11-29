@@ -61,9 +61,6 @@
         },
         function(isConfirm) {
           if (isConfirm) {
-            var data = {
-              artist_id: artist_id
-            };
             $.ajax({
                 type: "DELETE",
                 url: "/api/artist/" + artist_id,
